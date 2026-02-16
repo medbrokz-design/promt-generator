@@ -85,3 +85,4 @@ out/
 # OS Specific
 .DS_Store
 Thumbs.db
+.vercel
