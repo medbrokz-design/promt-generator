@@ -87,8 +87,6 @@ export const GeneratorTab = () => {
 
 
 
-      // Если режим Гейзенберга включен, делаем финальный инжект через наш движок
-
       if (heisenbergMode && tier !== 'master') {
 
         aiData.prompt = PromptEngineV6.applyHeisenberg(aiData.prompt, 'leica');
@@ -143,181 +141,357 @@ export const GeneratorTab = () => {
 
   return (
 
-    <div className="space-y-6">
+    <div className="space-y-8">
 
-      <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700">
+      {/* --- COMMAND CENTER --- */}
 
-        <div className="flex gap-2 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-          {(['quick', 'pro', 'master'] as const).map((t) => (
+        {/* Left: Controls */}
 
-            <button
+        <div className="lg:col-span-4 space-y-6">
 
-              key={t}
+          <div className="bg-white dark:bg-gray-800/50 backdrop-blur-xl rounded-[2rem] p-6 shadow-xl border border-gray-100 dark:border-gray-700/50">
 
-              onClick={() => setTier(t)}
+            <h3 className="text-[10px] font-black uppercase text-amber-500 tracking-[0.2em] mb-6 flex items-center gap-2">
 
-              className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                <BrainCircuit className="h-3 w-3" /> Command Center
 
-                tier === t 
+            </h3>
 
-                ? 'bg-amber-500 text-white shadow-lg' 
+            
 
-                : 'bg-gray-100 dark:bg-gray-900 text-gray-400'
+            <div className="space-y-8">
 
-              }`}
+                {/* Tiers */}
 
-            >
+                <div className="space-y-3">
 
-              {t} Tier
+                    <label className="text-[10px] font-bold text-gray-400 uppercase">Output Complexity</label>
 
-            </button>
+                    <div className="grid grid-cols-3 gap-2 bg-gray-50 dark:bg-gray-900/50 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-700">
 
-          ))}
+                        {(['quick', 'pro', 'master'] as const).map((t) => (
 
-        </div>
+                            <button
 
+                                key={t}
 
+                                onClick={() => setTier(t)}
 
-        <textarea
+                                className={`py-2 rounded-xl text-[9px] font-black uppercase transition-all ${
 
-          value={input}
+                                    tier === t 
 
-          onChange={(e) => setInput(e.target.value)}
+                                    ? 'bg-amber-500 text-white shadow-lg' 
 
-          placeholder="О чем будет креатив?..."
+                                    : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
 
-          className="w-full h-32 p-6 rounded-2xl border-2 border-gray-50 dark:border-gray-900 bg-gray-50 dark:bg-gray-900 focus:border-amber-500 focus:ring-0 resize-none transition-all text-xl font-medium"
+                                }`}
 
-        />
+                            >
 
-        
+                                {t}
 
-        <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-4">
+                            </button>
 
-          <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900 p-2 rounded-2xl border border-gray-100 dark:border-gray-700">
+                        ))}
 
-            <select 
-
-                value={platform}
-
-                onChange={(e) => setPlatform(e.target.value)}
-
-                className="px-4 py-2 rounded-xl bg-white dark:bg-gray-800 font-bold text-[10px] shadow-sm"
-
-            >
-
-                <option value="instagram">📸 INSTAGRAM</option>
-
-                <option value="tiktok">🎵 TIKTOK</option>
-
-                <option value="youtube">▶️ YOUTUBE</option>
-
-            </select>
-
-
-
-            <label className="flex items-center gap-2 cursor-pointer group">
-
-                <input 
-
-                    type="checkbox" 
-
-                    checked={heisenbergMode} 
-
-                    onChange={(e) => setHeisenbergMode(e.target.checked)}
-
-                    className="hidden" 
-
-                />
-
-                <div className={`w-10 h-6 rounded-full transition-all relative ${heisenbergMode ? 'bg-amber-500' : 'bg-gray-300'}`}>
-
-                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${heisenbergMode ? 'left-5' : 'left-1'}`} />
+                    </div>
 
                 </div>
 
-                <span className={`text-[10px] font-black uppercase tracking-tighter ${heisenbergMode ? 'text-amber-500' : 'text-gray-400'}`}>
 
-                    Heisenberg Engine
 
-                </span>
+                {/* Platform */}
 
-            </label>
+                <div className="space-y-3">
+
+                    <label className="text-[10px] font-bold text-gray-400 uppercase">Target Platform</label>
+
+                    <div className="grid grid-cols-1 gap-2">
+
+                        <select 
+
+                            value={platform}
+
+                            onChange={(e) => setPlatform(e.target.value)}
+
+                            className="w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 font-bold text-xs appearance-none focus:border-amber-500 transition-colors"
+
+                        >
+
+                            <option value="instagram">📸 Instagram Visuals</option>
+
+                            <option value="tiktok">🎵 TikTok Vertical</option>
+
+                            <option value="youtube">▶️ YouTube Narrative</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                {/* Heisenberg Mode */}
+
+                <div className="pt-4 border-t border-gray-50 dark:border-gray-700/50">
+
+                    <div 
+
+                        onClick={() => setHeisenbergMode(!heisenbergMode)}
+
+                        className={`group relative flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all border-2 ${
+
+                            heisenbergMode 
+
+                            ? 'bg-amber-500/5 border-amber-500/20 shadow-inner' 
+
+                            : 'bg-gray-50 dark:bg-gray-900/20 border-transparent'
+
+                        }`}
+
+                    >
+
+                        <div className="flex items-center gap-3">
+
+                            <div className={`p-2 rounded-lg transition-colors ${heisenbergMode ? 'bg-amber-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}>
+
+                                <Zap className="h-4 w-4" />
+
+                            </div>
+
+                            <div>
+
+                                <span className={`block text-xs font-black uppercase tracking-tight ${heisenbergMode ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400'}`}>
+
+                                    Heisenberg Engine
+
+                                </span>
+
+                                <span className="text-[9px] text-gray-400 font-medium">Dirty Realism Overdrive</span>
+
+                            </div>
+
+                        </div>
+
+                        <div className={`w-8 h-4 rounded-full relative transition-colors ${heisenbergMode ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-700'}`}>
+
+                            <div className={`absolute top-0.5 w-2 h-2 bg-white rounded-full transition-all ${heisenbergMode ? 'left-5' : 'left-1'}`} />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
 
           </div>
 
 
 
-          <Button 
+          {activeBrand && (
 
-            onClick={handleGenerate} 
+              <div className="bg-amber-500 rounded-[2rem] p-6 text-white shadow-2xl shadow-amber-500/20 relative overflow-hidden group">
 
-            isLoading={isGenerating} 
+                  <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
 
-            size="lg" 
+                      <Wand2 className="h-32 w-32 rotate-12" />
 
-            className="w-full sm:w-auto px-12 py-4 rounded-2xl shadow-xl shadow-amber-500/20"
+                  </div>
 
-            icon={<Wand2 className="h-5 w-5" />}
+                  <h4 className="text-[10px] font-black uppercase opacity-60 mb-1">Active Identity</h4>
 
-          >
+                  <p className="text-xl font-black truncate">{activeBrand.name}</p>
 
-            Generate {tier.toUpperCase()}
+                  <p className="text-[10px] font-bold mt-2 px-2 py-1 bg-white/20 rounded-full w-fit uppercase tracking-widest">{activeBrand.toneOfVoice}</p>
 
-          </Button>
+              </div>
+
+          )}
 
         </div>
 
-        
 
-        {error && <div className="mt-4 p-4 bg-red-50 text-red-600 text-sm rounded-xl flex items-center gap-2">
 
-            <AlertCircle className="h-4 w-4" /> {error}
+        {/* Right: Stage */}
 
-        </div>}
+        <div className="lg:col-span-8 space-y-6">
+
+          <div className="bg-white dark:bg-gray-800 rounded-[2.5rem] p-8 shadow-2xl border border-gray-100 dark:border-gray-700 h-full flex flex-col">
+
+            <h3 className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-6">Creative Brief</h3>
+
+            
+
+            <textarea
+
+              value={input}
+
+              onChange={(e) => setInput(e.target.value)}
+
+              placeholder="Desribe your vision... (e.g. 'Cyber-luxury apartment in Mars')"
+
+              className="flex-1 w-full p-0 bg-transparent border-none focus:ring-0 resize-none text-2xl font-medium placeholder:text-gray-200 dark:placeholder:text-gray-700 text-gray-900 dark:text-white"
+
+            />
+
+            
+
+            <div className="mt-8 flex items-center gap-4">
+
+                <Button 
+
+                    onClick={handleGenerate} 
+
+                    isLoading={isGenerating} 
+
+                    size="lg" 
+
+                    className="flex-1 py-6 text-xl rounded-[1.5rem] shadow-2xl shadow-amber-500/40"
+
+                    icon={<Wand2 className="h-6 w-6" />}
+
+                >
+
+                    Ignite Engine
+
+                </Button>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
 
 
+      {error && (
+
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 bg-red-50 text-red-600 text-sm rounded-2xl flex items-center gap-2 border border-red-100">
+
+            <AlertCircle className="h-4 w-4" /> {error}
+
+        </motion.div>
+
+      )}
+
+
+
+      {/* --- OUTPUT STAGE --- */}
+
       <AnimatePresence>
 
         {generatedResult && (
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 pb-20">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                <div className="bg-amber-500 rounded-3xl p-6 text-white shadow-xl">
+                {/* Score Card */}
 
-                    <h4 className="text-[10px] font-black uppercase opacity-60 mb-1">CTR Prediction</h4>
+                <div className="bg-white dark:bg-gray-800 rounded-[2rem] p-6 shadow-xl border border-gray-100 dark:border-gray-700 text-center">
 
-                    <div className="flex items-end gap-2">
+                    <h4 className="text-[9px] font-black uppercase text-gray-400 mb-2">Performance Grade</h4>
 
-                        <span className="text-5xl font-black">{generatedResult.ctr.grade}</span>
+                    <div className="text-6xl font-black text-amber-500 mb-1">{generatedResult.ctr.grade}</div>
 
-                        <span className="text-sm font-bold mb-1">Score: {generatedResult.ctr.score}%</span>
-
-                    </div>
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{generatedResult.ctr.score}% Accuracy</div>
 
                 </div>
 
-                <div className="md:col-span-2 bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 flex items-start gap-4">
 
-                    <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-2xl text-amber-600">
 
-                        <BrainCircuit className="h-6 w-6" />
+                {/* Analysis Card */}
+
+                <div className="md:col-span-3 bg-white dark:bg-gray-800 rounded-[2rem] p-8 shadow-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
+
+                    <div className="flex items-center gap-2 mb-3">
+
+                        <Sparkles className="h-4 w-4 text-amber-500" />
+
+                        <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Director's Commentary</h4>
 
                     </div>
 
+                    <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed italic font-serif">
+
+                        "{generatedResult.aiData.reasoning}"
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            {/* Main Prompt Card */}
+
+            <div className="bg-gray-900 rounded-[3rem] p-10 shadow-3xl border border-white/5 relative group">
+
+                <div className="absolute top-0 right-0 p-8">
+
+                    <Button 
+
+                        variant="secondary" 
+
+                        size="sm" 
+
+                        className="bg-white/5 border-white/10 hover:bg-white/10 text-white rounded-xl" 
+
+                        onClick={() => navigator.clipboard.writeText(`${generatedResult.prompt}\n\nNegative: ${generatedResult.aiData.negative_prompt}`)} 
+
+                        icon={<Copy className="h-4 w-4"/>}
+
+                    >
+
+                        Copy Full Package
+
+                    </Button>
+
+                </div>
+
+
+
+                <div className="flex items-center gap-2 mb-8">
+
+                    <div className="h-2 w-2 bg-amber-500 rounded-full animate-pulse" />
+
+                    <span className="text-xs font-black text-gray-500 uppercase tracking-[0.3em]">{tier} Logic Active</span>
+
+                </div>
+
+
+
+                <div className="space-y-10">
+
                     <div>
 
-                        <h4 className="text-[10px] font-black uppercase text-gray-400 mb-1">Strategy Analysis</h4>
+                        <h4 className="text-[10px] font-black uppercase text-amber-500/50 mb-4 tracking-widest">Master Prompt</h4>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed italic">
+                        <p className="text-xl text-gray-100 font-mono leading-relaxed select-all">
 
-                            "{generatedResult.aiData.reasoning}"
+                            {generatedResult.prompt}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div className="pt-10 border-t border-white/5">
+
+                        <h4 className="text-[10px] font-black uppercase text-red-500/50 mb-4 tracking-widest">Negative Protocol</h4>
+
+                        <p className="text-sm text-gray-500 font-mono leading-relaxed">
+
+                            {generatedResult.aiData.negative_prompt}
 
                         </p>
 
@@ -329,55 +503,35 @@ export const GeneratorTab = () => {
 
 
 
-            <div className="bg-gray-900 rounded-[2.5rem] p-8 shadow-2xl border border-amber-500/20 relative overflow-hidden">
+            {/* Visual Preview */}
 
-                <div className="flex items-center justify-between mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-[3rem] p-3 shadow-3xl border border-gray-100 dark:border-gray-700 overflow-hidden group">
 
-                    <div className="flex items-center gap-2">
+                <div className="relative rounded-[2.5rem] overflow-hidden">
 
-                        <Tag className="h-4 w-4 text-amber-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-10">
 
-                        <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Master Prompt</span>
+                        <div className="text-white">
 
-                    </div>
+                            <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">Visual Concept</p>
 
-                    <Button variant="secondary" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10 text-white" onClick={() => navigator.clipboard.writeText(generatedResult.prompt)} icon={<Copy className="h-4 w-4"/>}>Copy</Button>
+                            <p className="text-2xl font-black">Architecture of {input}</p>
 
-                </div>
-
-                <div className="text-gray-100 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-
-                    {generatedResult.prompt}
-
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-white/5">
-
-                    <h4 className="text-[10px] font-black uppercase text-red-500 mb-3 tracking-widest">Negative Prompt</h4>
-
-                    <div className="text-gray-500 font-mono text-xs">
-
-                        {generatedResult.aiData.negative_prompt}
+                        </div>
 
                     </div>
 
+                    <img 
+
+                        src={`https://image.pollinations.ai/prompt/${encodeURIComponent(generatedResult.prompt)}?nologo=true&width=1080&height=1920`} 
+
+                        className="w-full h-auto transition-transform duration-[2s] group-hover:scale-105"
+
+                        alt="AI Vision"
+
+                    />
+
                 </div>
-
-            </div>
-
-
-
-            <div className="bg-white dark:bg-gray-800 rounded-3xl p-2 shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-
-                <img 
-
-                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(generatedResult.prompt)}?nologo=true&width=1080&height=1920`} 
-
-                    className="w-full rounded-2xl shadow-inner"
-
-                    alt="AI Visualization"
-
-                />
 
             </div>
 
@@ -392,3 +546,5 @@ export const GeneratorTab = () => {
   );
 
 };
+
+
